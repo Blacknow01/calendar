@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Interactive Calendar</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; vertical-align: top; }
+        th { background-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Public Interactive Calendar</h2>
+    <table id="calendar">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'YOUR_GOOGLE_SHEET_SCRIPT_URL'; // แทนที่ด้วย URL ของ Apps Script
+
+        async function fetchEvents() {
+            const response = await fetch(apiUrl);
+            const events = await response.json();
+            return events;
+        }
+
+        async function displayEvents() {
+            const events = await fetchEvents();
+            const calendarBody = document.getElementById("calendar-body");
+            events.forEach(event => {
+                const row = document.createElement("tr");
+                const dateCell = document.createElement("td");
+                const eventCell = document.createElement("td");
+
+                dateCell.textContent = event.date; // ใส่วันที่
+                eventCell.textContent = event.event; // ใส่ชื่อกิจกรรม
+
+                row.appendChild(dateCell);
+                row.appendChild(eventCell);
+                calendarBody.appendChild(row);
+            });
+        }
+
+        displayEvents(); // เรียกใช้ฟังก์ชันเพื่อแสดงกิจกรรม
+    </script>
+</body>
+</html>
